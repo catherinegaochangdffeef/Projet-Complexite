@@ -189,11 +189,47 @@ int *marqueurs_negatifs1(EXPERIENCE *xp, int *cptOP) {
 // Le second argument servira a compter le nombre d'utilisation de l'opérateur OP
 int *marqueurs_negatifs2(EXPERIENCE *xp, int *cptOP) {
   *cptOP = 0;
-  
+
   int *res = (int *)malloc((xp->m-xp->p)*sizeof(int));
-  
+
+  //trier la 2ème tables
+  mergeSort(xp->marqueurs_positifs, 0, xp->p-1);
+  printf("Marqueurs: \n");
+  affiche(xp->marqueurs, xp->m);
+  printf("Marqueurs positifs: \n");
+  affiche(xp->marqueurs_positifs, xp->p);
+
+  //comparaison
+  int i=0, j=0, k=0;
+  // i pour tous les marqueurs, j pour marqueur positif, k pour marque negatif
+
+  for(i;i<=xp->m-1;i++){
+    for(j=0;j<=xp->p-1;j++){
+
+      (*cptOP)++;
+      if(xp->marqueurs[i] > xp->marqueurs_positifs[j]){
+        if(j == xp->p-1){// a la fin de la table de marqueurs_positifs
+          res[k]=xp->marqueurs[i];
+          k++;
+          break;
+        }
+      }
+      else if(xp->marqueurs[i] < xp->marqueurs_positifs[j]){
+        (*cptOP)++;
+        res[k]=xp->marqueurs[i];
+        k++;
+        break;
+      }
+      else{// xp->marqueurs[i] == xp->marqueurs_positifs[j]
+        (*cptOP)++;
+        break;
+      }
+    }
+  }
+
   return res;
 }
+
 
 // Fonction a completer - Strategie 3
 // Le second argument servira a compter le nombre d'utilisation de l'opérateur OP
